@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avaliação — Introdução à Administração</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+:root{--green:#1a6b4a;--gl:#e8f5ef;--gm:#2d9164;--rl:#fdf0f0;--red:#c0392b;--gray:#6b7280;--bdr:#e5e7eb;--bg:#f9f8f5;--wh:#fff;--tx:#1a1a1a;--ts:#4b5563}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--tx);padding:2rem 1rem 4rem}
+.wrap{max-width:720px;margin:0 auto}
+.hdr{text-align:center;margin-bottom:2rem;padding:2rem;background:var(--wh);border-radius:16px;border:1px solid var(--bdr)}
+.hdr-sub{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray);margin-bottom:.5rem}
+.hdr h1{font-family:'Lora',serif;font-size:21px;font-weight:600;line-height:1.3}
+.hdr-meta{font-size:13px;color:var(--ts);display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--bdr)}
+.card{background:var(--wh);border:1px solid var(--bdr);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem}
+.card-title{font-size:12px;font-weight:500;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem}
+.field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.85rem}
+.field:last-child{margin-bottom:0}
+label{font-size:13px;color:var(--ts)}
+input{width:100%;padding:10px 14px;border:1px solid var(--bdr);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--tx);background:var(--bg);outline:none}
+input:focus{border-color:var(--gm)}
+.prog-wrap{margin-bottom:1rem}
+.prog-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:5px}
+.prog-bar{width:100%;height:5px;background:var(--bdr);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--gm);border-radius:3px;transition:width .4s}
+.qcard{background:var(--wh);border:1px solid var(--bdr);border-radius:16px;padding:1.75rem;margin-bottom:1rem;animation:fi .2s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qtag{display:inline-block;background:var(--gl);color:var(--green);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;padding:4px 12px;border-radius:20px;margin-bottom:.85rem}
+.qtext{font-size:15px;line-height:1.75;margin-bottom:1.2rem}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:11px 15px;border:1px solid var(--bdr);border-radius:12px;cursor:pointer;transition:all .15s;background:var(--wh)}
+.opt:hover{background:var(--gl);border-color:#a7d4be}
+.opt.sel{border-color:var(--gm);background:var(--gl)}
+.opt.ok{border-color:var(--green);background:var(--gl);cursor:default}
+.opt.err{border-color:var(--red);background:var(--rl);cursor:default}
+.opt.rv{cursor:default}
+.ltr{width:26px;height:26px;min-width:26px;border-radius:50%;border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--gray);background:var(--bg)}
+.opt.sel .ltr{background:var(--gm);color:#fff;border-color:var(--gm)}
+.opt.ok .ltr{background:var(--green);color:#fff;border-color:var(--green)}
+.opt.err .ltr{background:var(--red);color:#fff;border-color:var(--red)}
+.otxt{font-size:14px;line-height:1.6;padding-top:3px}
+.nav{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;flex:1}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bdr);cursor:pointer;border:none;transition:background .2s}
+.dot.done{background:var(--gm)}.dot.cur{background:var(--tx)}
+btn,button{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:10px 22px;border-radius:10px;cursor:pointer;border:1px solid var(--bdr);background:var(--wh);color:var(--tx);transition:all .15s}
+button:hover{background:var(--bg)}
+button:disabled{opacity:.35;cursor:not-allowed}
+.btn-fin{display:block;width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:2rem;transition:background .15s}
+.btn-fin:hover{background:#145738}
+.btn-fin:disabled{background:var(--gray);cursor:not-allowed}
+.res{display:none}
+.score-card{background:var(--wh);border:1px solid var(--bdr);border-radius:16px;padding:2.5rem 2rem;text-align:center;margin-bottom:1.25rem}
+.score-n{font-family:'Lora',serif;font-size:68px;font-weight:600;color:var(--green);line-height:1}
+.score-d{font-size:26px;color:var(--gray)}
+.score-p{font-size:14px;color:var(--ts);margin-top:.5rem}
+.score-nm{font-size:17px;font-weight:500;margin-top:.85rem}
+.sit{display:inline-block;margin-top:.85rem;padding:6px 18px;border-radius:20px;font-size:13px;font-weight:500}
+.aprov{background:var(--gl);color:var(--green)}
+.repr{background:var(--rl);color:var(--red)}
+.gab-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:1rem}
+.gi{padding:8px 4px;border-radius:10px;text-align:center;font-size:12px;font-weight:500;border:1px solid transparent}
+.gok{background:var(--gl);color:var(--green);border-color:#a7d4be}
+.gfail{background:var(--rl);color:var(--red);border-color:#f5b8b4}
+.msg{padding:13px 16px;border-radius:12px;font-size:14px;text-align:center;margin-top:.5rem}
+.msg-ok{background:var(--gl);color:var(--green)}
+.msg-err{background:var(--rl);color:var(--red)}
+.rev-title{font-size:13px;font-weight:500;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin:1.5rem 0 1rem}
+@media(max-width:500px){.gab-grid{grid-template-columns:repeat(4,1fr)}.score-n{font-size:52px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hdr">
+  <div class="hdr-sub">Universidade Federal do Amazonas &middot; FES &middot; Depto. de Administra&ccedil;&atilde;o</div>
+  <h1>Avalia&ccedil;&atilde;o Te&oacute;rica I &mdash; Introdu&ccedil;&atilde;o &agrave; Administra&ccedil;&atilde;o (FAA011)</h1>
+  <div class="hdr-meta"><span>Prof.&ordf; Val&eacute;ria Vieira</span><span>Semestre 2026-1</span><span>20 quest&otilde;es &middot; 0,5 pt cada</span></div>
+</div>
+
+<div class="card" id="id-card">
+  <div class="card-title">Identifica&ccedil;&atilde;o</div>
+  <div class="field"><label>Nome completo do aluno</label><input type="text" id="nome" placeholder="Digite seu nome completo"></div>
+  <div class="field"><label>Matr&iacute;cula</label><input type="text" id="mat" placeholder="Ex: 21250123"></div>
+</div>
+
+<div id="quiz">
+  <div class="prog-wrap">
+    <div class="prog-labels"><span id="pl">Quest&atilde;o 1 de 20</span><span id="pp">0% respondidas</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="pf" style="width:5%"></div></div>
+  </div>
+  <div id="qa"></div>
+  <div class="nav">
+    <button id="bp" onclick="nav(-1)" disabled>&larr; Anterior</button>
+    <div class="dots" id="dots"></div>
+    <button id="bn" onclick="nav(1)">Pr&oacute;xima &rarr;</button>
+  </div>
+  <button class="btn-fin" id="bf" onclick="finish()" style="display:none">Finalizar prova e enviar gabarito</button>
+</div>
+
+<div class="res" id="res">
+  <div class="score-card">
+    <div><span class="score-n" id="sn"></span><span class="score-d">/10</span></div>
+    <div class="score-p" id="sp"></div>
+    <div class="score-nm" id="snm"></div>
+    <div class="sit" id="ss"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Suas respostas</div>
+    <div class="gab-grid" id="gg"></div>
+    <div id="em"></div>
+  </div>
+  <div class="rev-title">Revis&atilde;o detalhada</div>
+  <div id="rv"></div>
+</div>
+
+</div>
+<script>
+emailjs.init('jVzWKvOfMeowuWKU0');
+var SID='service_v8uetvj', TID='0og315x', PEMAIL='valeriavieira@ufam.edu.br';
+
+var Q=[
+{q:"Um empres\u00e1rio, propriet\u00e1rio de uma rede de brech\u00f3s identificou uma grande oportunidade de mercado na aquisi\u00e7\u00e3o de um t\u00eanis produzido em quantidade limitada. Ele instruiu um funcion\u00e1rio a adquirir 500 pares, destinando R$50.000 (R$100/par). Ap\u00f3s um m\u00eas, o funcion\u00e1rio adquiriu 400 pares a R$70 cada. Com rela\u00e7\u00e3o \u00e0s dimens\u00f5es dos indicadores de desempenho, o funcion\u00e1rio foi",o:["eficiente, mas n\u00e3o eficaz.","efetivo, mas n\u00e3o eficiente.","eficaz, mas n\u00e3o rent\u00e1vel.","eficaz, mas n\u00e3o eficiente.","efetivo, mas n\u00e3o excelente."],a:0},
+{q:"O conceito de administra\u00e7\u00e3o envolve planejamento, organiza\u00e7\u00e3o, dire\u00e7\u00e3o e controle. Analise as afirma\u00e7\u00f5es (V/F):\n\nI. Planejar \u00e9 estimar os meios para realizar os objetivos e tomar decis\u00f5es antecipadas.\nII. Organizar \u00e9 dispor adequadamente os elementos da organiza\u00e7\u00e3o para aumentar efici\u00eancia.\nIII. Dirigir \u00e9 orientar, liderar e motivar pessoas alinhadas aos objetivos organizacionais.\nIV. Controlar exige que o planejamento esteja perfeito, eliminando a necessidade de corre\u00e7\u00f5es.",o:["F \u2013 F \u2013 V \u2013 V","V \u2013 F \u2013 V \u2013 F","V \u2013 V \u2013 V \u2013 V","V \u2013 V \u2013 V \u2013 F","V \u2013 V \u2013 F \u2013 V"],a:3},
+{q:"Sobre a Administra\u00e7\u00e3o Cient\u00edfica de Frederick Taylor, assinale a alternativa correta.",o:["As tarefas devem ser divididas de forma igualit\u00e1ria para promover equidade.","A estrutura organizacional deve ser flex\u00edvel, com fun\u00e7\u00f5es alteradas frequentemente.","A lideran\u00e7a foca no homem administrativo, sem envolver trabalhadores nas decis\u00f5es.","A motiva\u00e7\u00e3o dos funcion\u00e1rios \u00e9 secund\u00e1ria \u00e0 efici\u00eancia dos processos.","A pr\u00e1tica de observar e medir detalhadamente os m\u00e9todos de trabalho para identificar a forma mais eficiente de realizar tarefas e melhorar a produtividade."],a:4},
+{q:"Robert Merton identificou disfun\u00e7\u00f5es da burocracia como anomalias de funcionamento. Segundo ele, entre as principais disfun\u00e7\u00f5es est\u00e3o:\n\nI. Excesso de formalismo e papel\u00f3rio.\nII. Impessoalidade do relacionamento.\nIII. Hierarquiza\u00e7\u00e3o da autoridade.\n\nQuais est\u00e3o corretas?",o:["Apenas I.","Apenas II.","Apenas I e III.","Apenas II e III.","I, II e III."],a:0},
+{q:"Um empres\u00e1rio aplica pol\u00edtica salarial com sal\u00e1rio base + comiss\u00e3o por produtividade, acreditando que os esfor\u00e7os s\u00e3o exclusivamente relacionados aos incentivos financeiros. Esse entendimento tem influ\u00eancia da",o:["abordagem cl\u00e1ssica, remetendo ao conceito do homo economicus.","abordagem sist\u00eamica, a qual considera a intera\u00e7\u00e3o do homem com fatores extr\u00ednsecos.","abordagem contingencial, enfatizando a depend\u00eancia entre estrutura e ambiente.","abordagem estruturalista, priorizando a efic\u00e1cia \u00e0 forma.","abordagem human\u00edstica, ressaltando as necessidades b\u00e1sicas associadas \u00e0s finan\u00e7as."],a:0},
+{q:"Sobre a Teoria da Administra\u00e7\u00e3o Cl\u00e1ssica de Fayol, assinale a alternativa INCORRETA.",o:["As fun\u00e7\u00f5es do administrador se classificam em previs\u00e3o, organiza\u00e7\u00e3o, comando, coordena\u00e7\u00e3o e controle.","As fun\u00e7\u00f5es b\u00e1sicas da organiza\u00e7\u00e3o dividiam-se em produ\u00e7\u00e3o, comerciais, financeiras, de seguran\u00e7a, cont\u00e1beis e administrativas.","A preocupa\u00e7\u00e3o fundamental \u00e9 elevar a efici\u00eancia atrav\u00e9s da forma e disposi\u00e7\u00e3o dos \u00f3rg\u00e3os e departamentos.","Uma das cr\u00edticas \u00e9 que a organiza\u00e7\u00e3o \u00e9 vista como um sistema fechado, que n\u00e3o interage com seu ambiente.","A organiza\u00e7\u00e3o formal e a organiza\u00e7\u00e3o informal s\u00e3o evidenciadas nessa teoria."],a:4},
+{q:"O Sr. X enxerga os departamentos como elementos da organiza\u00e7\u00e3o e a organiza\u00e7\u00e3o como parte de sistemas maiores. Sua abordagem \u00e9 hol\u00edstica, defende a interdepend\u00eancia das partes e o tratamento complexo da realidade. O Sr. X enxerga a organiza\u00e7\u00e3o de forma:",o:["Contingencial.","Burocrática.","Comportamental.","Sist\u00eamica.","Behaviorista."],a:3},
+{q:"A Escola de Rela\u00e7\u00f5es Humanas revolucionou a teoria geral da administra\u00e7\u00e3o ao mostrar que:",o:["o desempenho n\u00e3o seria determinado apenas pela qualidade dos gerentes, mas tamb\u00e9m pelo desenvolvimento tecnol\u00f3gico.","o desempenho n\u00e3o seria determinado apenas pelas t\u00e9cnicas de Taylor e Ford, mas tamb\u00e9m pelas normas da organiza\u00e7\u00e3o.","o desempenho n\u00e3o seria determinado somente pela cultura organizacional, mas tamb\u00e9m pelas rela\u00e7\u00f5es sociais.","o desempenho n\u00e3o seria determinado apenas pelo ambiente, mas tamb\u00e9m pelas t\u00e9cnicas de produtividade.","o desempenho dos trabalhadores n\u00e3o seria determinado apenas pelos m\u00e9todos da administra\u00e7\u00e3o cient\u00edfica, mas tamb\u00e9m pelo efeito do sistema social no comportamento dos indiv\u00edduos."],a:4},
+{q:"Considerando os estilos autocrático, democrático e liberal e sua adequa\u00e7\u00e3o ao perfil do liderado, assinale a alternativa CORRETA.",o:["O estilo autocrático \u00e9 adequado ao liderado experiente, motivado e aut\u00f4nomo.","O estilo liberal \u00e9 adequado ao liderado jovem, inexperiente e desmotivado.","O estilo democrático \u00e9 adequado ao liderado jovem e inexperiente, pois a participa\u00e7\u00e3o nas decis\u00f5es supre a falta de conhecimento.","O estilo liberal \u00e9 adequado ao liderado especialista e motivado, que sabe e quer realizar suas tarefas com autonomia.","O estilo autocrático \u00e9 adequado ao liderado experiente e motivado, pois o controle r\u00edgido potencializa o desempenho."],a:3},
+{q:"Na Teoria dos Sistemas, h\u00e1 um par\u00e2metro que compara o produto com o controle estabelecido para avalia\u00e7\u00e3o de como trabalhar da melhor forma. Assinale a alternativa correspondente a esse par\u00e2metro.",o:["Processamento.","Hierarquiza\u00e7\u00e3o.","Departamentaliza\u00e7\u00e3o.","Retroalimenta\u00e7\u00e3o.","Ambiente."],a:3},
+{q:"Com base nas caracter\u00edsticas das Teorias da Administra\u00e7\u00e3o, numere corretamente:\n1. Burocrática  2. Cient\u00edfica  3. Cl\u00e1ssica  4. Contingencial  5. Estruturalista\n\n( ) \u00canfase no ambiente e na tecnologia.\n( ) \u00canfase na estrutura para ser eficiente.\n( ) \u00canfase na estrutura fundada em normas escritas.\n( ) \u00canfase na estrutura e no ambiente com foco humano e social.\n( ) \u00canfase nas tarefas e incentivos salariais.\n\nA sequ\u00eancia correta \u00e9:",o:["4, 3, 1, 5, 2","4, 2, 3, 1, 5","3, 4, 2, 1, 5","5, 2, 4, 3, 1","5, 1, 3, 2, 4"],a:0},
+{q:"A Teoria Estruturalista trouxe uma abordagem interdisciplinar. Assinale a op\u00e7\u00e3o que apresenta um dos principais conceitos trazidos pela Teoria Estruturalista.",o:["A ideia de homem organizacional.","A forma de controle proveniente da domina\u00e7\u00e3o racional legal.","O uso de recompensas sociais e simb\u00f3licas.","O foco no comportamento dos grupos informais.","A organiza\u00e7\u00e3o por meio de um sistema de hierarquia funcional."],a:0},
+{q:"Sobre a pir\u00e2mide organizacional, avalie as assertivas:\n\nI. O n\u00edvel no topo \u00e9 o T\u00e1tico ou Gerencial, onde ficam os gerentes m\u00e9dios.\nII. A base corresponde ao n\u00edvel Operacional, com profissionais da execu\u00e7\u00e3o cotidiana.\nIII. O n\u00edvel Operacional \u00e9 de menor import\u00e2ncia, com menores sal\u00e1rios e atribui\u00e7\u00f5es.\nIV. O n\u00edvel Estrat\u00e9gico foca especificamente na gest\u00e3o dos recursos financeiros.\n\nEst\u00e1 correto apenas:",o:["II.","I e III.","II e IV.","II, III e IV.","I, II e III."],a:0},
+{q:"Conhecer a evolu\u00e7\u00e3o do pensamento administrativo permite concluir, acertadamente, que:",o:["a resolu\u00e7\u00e3o de problemas pode ser tentada pela aplica\u00e7\u00e3o conjunta de v\u00e1rias Teorias, ainda que suas abordagens sejam, \u00e0 primeira vista, antagônicas.","como ci\u00eancia, a Administra\u00e7\u00e3o independe de outras ci\u00eancias.","ao enfatizar as tarefas, a abordagem burocrática enrijece a organiza\u00e7\u00e3o, afastando-a de seus objetivos.","a Teoria Cl\u00e1ssica possui apenas valor hist\u00f3rico e referencial, n\u00e3o sendo aplic\u00e1vel nos dias atuais.","a cultura de uma organiza\u00e7\u00e3o \u00e9 determinada por sua estrutura, sendo pouco afetada pelos valores das pessoas."],a:0},
+{q:"As fun\u00e7\u00f5es administrativas n\u00e3o s\u00e3o exercidas com a mesma intensidade em todos os n\u00edveis hier\u00e1rquicos. Assinale a alternativa CORRETA.",o:["\u00c0 medida que se sobe na hierarquia, a fun\u00e7\u00e3o Dirigir torna-se progressivamente mais relevante, atingindo seu maior percentual no n\u00edvel estrat\u00e9gico.","A fun\u00e7\u00e3o Planejar \u00e9 mais relevante no n\u00edvel operacional, pois os trabalhadores precisam organizar suas atividades cotidianas."\,"\u00c0 medida que se sobe na hierarquia, a fun\u00e7\u00e3o Planejar torna-se progressivamente mais relevante, atingindo seu maior percentual no n\u00edvel estrat\u00e9gico.","Os n\u00edveis t\u00e1tico e operacional apresentam distribui\u00e7\u00e3o id\u00eantica das fun\u00e7\u00f5es administrativas.","A fun\u00e7\u00e3o Controlar \u00e9 a mais relevante no n\u00edvel estrat\u00e9gico."],a:2},
+{q:"Considerando a teoria de Maslow, uma empresa implementa a\u00e7\u00e3o social para um grupo em extrema vulnerabilidade (sem acesso a alimenta\u00e7\u00e3o, \u00e1gua e vestu\u00e1rio). A necessidade que deveria ser priorizada \u00e9:",o:["de autorrealiza\u00e7\u00e3o.","de seguran\u00e7a.","sociais.","fisiol\u00f3gicas.","de estima."],a:3},
+{q:"A Experi\u00eancia de Hawthorne (Western Electric, d\u00e9cadas de 1920\u20131930) possibilitou o entendimento de que:",o:["as pessoas agem de forma semelhante quando est\u00e3o sozinhas e em grupo.","na primeira fase, verificou-se que o fator psicol\u00f3gico n\u00e3o exerce influ\u00eancia sobre o desempenho.","os trabalhadores sentiram-se explorados por participar de um estudo cient\u00edfico.","um incentivo significativo para o aumento da produ\u00e7\u00e3o estava relacionado aos benef\u00edcios materiais e \u00e0s recompensas financeiras.","os grupos se esfor\u00e7avam mais no trabalho quando acreditavam que a dire\u00e7\u00e3o se preocupava com seu bem-estar."],a:4},
+{q:"Sobre a organiza\u00e7\u00e3o informal, descoberta a partir da Teoria das Rela\u00e7\u00f5es Humanas, assinale a alternativa CORRETA.",o:["A organiza\u00e7\u00e3o informal atua sempre em harmonia com os objetivos da organiza\u00e7\u00e3o formal.","A principal caracter\u00edstica da organiza\u00e7\u00e3o informal \u00e9 a aus\u00eancia de lideran\u00e7as.","A organiza\u00e7\u00e3o informal pode estabelecer padr\u00f5es pr\u00f3prios de produ\u00e7\u00e3o e exercer press\u00e3o social sobre seus membros, independentemente das normas formais.","A organiza\u00e7\u00e3o informal foi criada intencionalmente pelos pesquisadores de Hawthorne.","A influ\u00eancia da organiza\u00e7\u00e3o informal restringe-se ao ambiente social, sem impacto sobre o desempenho produtivo."],a:2},
+{q:"Sobre os dois n\u00edveis de ambiente organizacional (tarefa e geral) na Teoria dos Sistemas, avalie:\n\nI. O ambiente geral \u00e9 composto por vari\u00e1veis sobre as quais a organiza\u00e7\u00e3o tem pouco controle.\nII. O ambiente tarefa permite rela\u00e7\u00e3o mais din\u00e2mica, envolvendo clientes, fornecedores e concorrentes.\nIII. Uma mudan\u00e7a na legisla\u00e7\u00e3o tribut\u00e1ria \u00e9 vari\u00e1vel do ambiente tarefa.\nIV. A entrada de um novo concorrente no mercado \u00e9 vari\u00e1vel do ambiente geral.\n\nEst\u00e1 correto apenas:",o:["I e II.","I e III.","II e III.","II e IV.","I, II e IV."],a:0},
+{q:"Para Max Weber, a burocracia \u00e9 a organiza\u00e7\u00e3o eficiente por excel\u00eancia. Segundo o autor, a burocracia apresenta a seguinte caracter\u00edstica:",o:["car\u00e1ter pessoal das rela\u00e7\u00f5es.","car\u00e1ter informal das comunica\u00e7\u00f5es.","rotinas e procedimentos padronizados.","imprevisibilidade do funcionamento da organiza\u00e7\u00e3o.","cargos sem controles e supervis\u00e3o, sendo a autoridade informal."],a:2}
+];
+
+var cur=0, ans=new Array(Q.length).fill(null), done=false;
+function L(i){return String.fromCharCode(65+i)}
+function e(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function dots(){
+  var el=document.getElementById('dots'); el.innerHTML='';
+  Q.forEach(function(_,i){
+    var d=document.createElement('button');
+    d.className='dot'+(ans[i]!==null?' done':'')+(i===cur?' cur':'');
+    d.title='Q'+(i+1); d.onclick=function(){cur=i;render()};
+    el.appendChild(d);
+  });
+}
+
+function render(){
+  var q=Q[cur], answered=ans.filter(function(a){return a!==null}).length;
+  var pct=Math.round(answered/Q.length*100);
+  document.getElementById('pl').textContent='Quest\u00e3o '+(cur+1)+' de '+Q.length;
+  document.getElementById('pp').textContent=pct+'% respondidas';
+  document.getElementById('pf').style.width=Math.max(5,Math.round((cur+1)/Q.length*100))+'%';
+  var html='<div class="qcard"><span class="qtag">Quest\u00e3o '+(cur+1)+'</span>';
+  html+='<p class="qtext">'+e(q.q).replace(/\n/g,'<br>')+'</p><div class="opts">';
+  q.o.forEach(function(opt,i){
+    var cls=ans[cur]===i?'sel':'';
+    html+='<div class="opt '+cls+'" onclick="pick('+i+')"><div class="ltr">'+L(i)+'</div><div class="otxt">'+e(opt)+'</div></div>';
+  });
+  html+='</div></div>';
+  document.getElementById('qa').innerHTML=html;
+  document.getElementById('bp').disabled=cur===0;
+  document.getElementById('bn').style.display=cur<Q.length-1?'inline-block':'none';
+  document.getElementById('bf').style.display=cur===Q.length-1?'block':'none';
+  dots();
+}
+
+function pick(i){if(done)return; ans[cur]=i; render();}
+function nav(d){cur=Math.max(0,Math.min(Q.length-1,cur+d)); render();}
+
+function finish(){
+  var nome=document.getElementById('nome').value.trim();
+  var mat=document.getElementById('mat').value.trim();
+  if(!nome){alert('Por favor, informe o nome do aluno.');return;}
+  var sem=ans.filter(function(a){return a===null}).length;
+  if(sem>0&&!confirm('Voc\u00ea deixou '+sem+' quest\u00e3o(ões) sem resposta. Deseja finalizar mesmo assim?'))return;
+  done=true;
+  var btn=document.getElementById('bf');
+  btn.disabled=true; btn.textContent='Enviando...';
+
+  var score=ans.filter(function(a,i){return a===Q[i].a}).length;
+  var nota=(score*0.5).toFixed(1);
+  var pct=Math.round(score/Q.length*100);
+  var aprov=pct>=60;
+
+  var gab=ans.map(function(a,i){
+    var ok=a===Q[i].a;
+    return 'Q'+(i+1)+': Aluno: '+(a!==null?L(a):'N\u00e3o respondida')+' | Gabarito: '+L(Q[i].a)+' | '+(ok?'CERTO':'ERRADO');
+  }).join('\n');
+
+  emailjs.send(SID, TID, {
+    nome: nome+(mat?' (Mat: '+mat+')':''),
+    acertos: score+'/20 \u2014 Nota: '+nota+'/10',
+    percentual: pct,
+    situacao: aprov?'APROVADO(A)':'REPROVADO(A)',
+    gabarito: gab
+  }).then(function(){
+    showRes(nome,mat,score,nota,pct,aprov,true);
+  }).catch(function(err){
+    console.error(err);
+    showRes(nome,mat,score,nota,pct,aprov,false);
+  });
+}
+
+function showRes(nome,mat,score,nota,pct,aprov,ok){
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('id-card').style.display='none';
+  document.getElementById('res').style.display='block';
+  document.getElementById('sn').textContent=nota;
+  document.getElementById('sp').textContent=score+' acertos de 20 \u2014 '+pct+'% de aproveitamento';
+  document.getElementById('snm').textContent=nome+(mat?' \u2014 '+mat:'');
+  var ss=document.getElementById('ss');
+  ss.textContent=aprov?'\u2713 Aprovado(a)':'\u2717 Reprovado(a)';
+  ss.className='sit '+(aprov?'aprov':'repr');
+  var g='';
+  ans.forEach(function(a,i){
+    var isok=a===Q[i].a;
+    g+='<div class="gi '+(isok?'gok':'gfail')+'">Q'+(i+1)+'<br>'+(a!==null?L(a):'\u2014')+'</div>';
+  });
+  document.getElementById('gg').innerHTML=g;
+  document.getElementById('em').innerHTML=ok
+    ?'<div class="msg msg-ok">\u2713 Gabarito enviado automaticamente para a professora.</div>'
+    :'<div class="msg msg-err">N\u00e3o foi poss\u00edvel enviar o e-mail. Informe a professora pessoalmente.</div>';
+  var rv='';
+  Q.forEach(function(q,i){
+    var ua=ans[i], isok=ua===q.a;
+    rv+='<div class="qcard" style="margin-bottom:1rem"><span class="qtag">Q'+(i+1)+' \u2014 '+(isok?'\u2713 Correta':'\u2717 Incorreta')+'</span>';
+    rv+='<p class="qtext">'+e(q.q).replace(/\n/g,'<br>')+'</p><div class="opts">';
+    q.o.forEach(function(opt,j){
+      var cls='rv '; if(j===q.a)cls+='ok'; else if(j===ua)cls+='err';
+      rv+='<div class="opt '+cls+'"><div class="ltr">'+L(j)+'</div><div class="otxt">'+e(opt)+'</div></div>';
+    });
+    rv+='</div></div>';
+  });
+  document.getElementById('rv').innerHTML=rv;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+render();
+</script>
+</body>
+</html>
