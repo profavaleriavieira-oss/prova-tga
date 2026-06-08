@@ -221,8 +221,17 @@ function finish(){
   }
   emailjs.send(SID,TID,{nome:nomeA+' (Mat: '+matA+')',acertos:score+'/20 - Nota: '+nota+'/10',percentual:pct,situacao:aprov?'APROVADO(A)':'REPROVADO(A)',gabarito:gab})
   .then(function(){showRes(score,nota,pct,aprov,true);})
-  .catch(function(e){console.error(e);showRes(score,nota,pct,aprov,false);});
-}
+ .catch(function(e){
+
+    console.error("EMAILJS ERROR:", e);
+
+    alert(
+        "ERRO EMAILJS\n\n" +
+        JSON.stringify(e, null, 2)
+    );
+
+    showRes(score,nota,pct,aprov,false);
+});
 function showRes(score,nota,pct,aprov,ok){
   document.getElementById('quiz').style.display='none';
   document.getElementById('res').style.display='block';
