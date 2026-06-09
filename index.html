@@ -216,18 +216,14 @@ function finish(){
     var ok=ans[i]===QS[i].a;
     gab+='Q'+(i+1)+': Aluno: '+(ans[i]!==null?L(ans[i]):'Não respondida')+' | Gabarito: '+L(QS[i].a)+' | '+(ok?'CERTO':'ERRADO')+'\n';
   }
-  fetch(FORMSPREE,{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
-    body:JSON.stringify({
-      nome:nomeA+' (Mat: '+matA+')',
-      acertos:score+'/20 - Nota: '+nota+'/10',
-      percentual:pct+'%',
-      situacao:aprov?'APROVADO(A)':'REPROVADO(A)',
-      gabarito:gab,
-      _subject:'Resultado da Prova - '+nomeA
-    })
-  }).then(function(r){
+  var fd=new FormData();
+  fd.append('nome',nomeA+' (Mat: '+matA+')');
+  fd.append('acertos',score+'/20 - Nota: '+nota+'/10');
+  fd.append('percentual',pct+'%');
+  fd.append('gabarito',gab);
+  fd.append('_subject','Resultado da Prova - '+nomeA);
+  fetch(FORMSPREE,{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+  .then(function(r){
     if(r.ok){showRes(score,nota,pct,true);}
     else{showRes(score,nota,pct,false);}
   }).catch(function(e){console.error(e);showRes(score,nota,pct,false);});
